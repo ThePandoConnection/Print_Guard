@@ -1,5 +1,18 @@
 import serial
 import time
+import threading
+
+
+class printThread(threading.Thread):
+    def __init__(self, f, ser):
+        threading.Thread.__init__(self)
+        self.f = f
+        self.ser = ser
+
+    def run(self):
+        print('Starting Print')
+        runPrinter(self.f, self.ser)
+        print('Print Finished')
 
 
 def printerConnect(port='COM3', baudrate=115200):
@@ -13,16 +26,21 @@ def loadGcode(file):
     return f
 
 
-def runPrinter(f):
-    return 0
+def runPrinter(f, ser):
+    for line in f:
+        time.sleep(2)
+
+        ser.write(line.encode('ascii'))
+
+        time.sleep(1)
+    return True
 
 
 if __name__ == "__main__":
+    f = loadGcode('test')
     ser = printerConnect()
-    time.sleep(2)
-
-    ser.write(('G28\n').encode('ascii'))
-
-    time.sleep(1)
+    thread = printThread(f, ser)
+    thread.start()
+    print('test')
 
     ser.close()
