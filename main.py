@@ -1,24 +1,21 @@
+from typing import TextIO
+
 import serial
 import time
 import threading
 
 
 class printThread(threading.Thread):
-    def __init__(self, f, ser):
+    def __init__(self, f, port, baudrate):
         threading.Thread.__init__(self)
         self.f = f
-        self.ser = ser
+        self.port = port
+        self.baudrate = baudrate
 
     def run(self):
         print('Starting Print')
-        runPrinter(self.f, self.ser)
+        runPrinter(self.f, self.port, self.baudrate)
         print('Print Finished')
-
-
-def printerConnect(port='COM3', baudrate=115200):
-    ser = serial.Serial(port=port, baudrate=baudrate, bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
-    print(ser.name + " is open")
-    return ser
 
 
 def loadGcode(file):
@@ -26,21 +23,33 @@ def loadGcode(file):
     return f
 
 
-def runPrinter(f, ser):
+def runPrinter(f, port, baudrate):
+    ser = serial.Serial(port=port, baudrate=baudrate)
+    if ser.isOpen():
+        print(ser.name + " is open")
+    else:
+        print('An Error occurred with the port, trying again')
+        ser.open()
+
+    print('Printing')
+
+    ser.write("\r\n\r\n".encode())
+    time.sleep(2)
+    ser.flushInput()
+
     for line in f:
-        time.sleep(2)
-
-        ser.write(line.encode('ascii'))
-
-        time.sleep(1)
-    return True
+        while pause:
+            time.sleep(5)
+            print('paused')
+        l = line.strip()  # Strip all EOL characters for streaming
+        print('Sending: ' + l)
+        ser.write((l + '\n').encode())  # Send g-code block to grbl
+        print('Received: ' + ser.readline().decode("utf-8"))
+    ser.close()
 
 
 if __name__ == "__main__":
     f = loadGcode('test')
-    ser = printerConnect()
-    thread = printThread(f, ser)
+    thread = printThread(f, port='COM3', baudrate=115200)
     thread.start()
-    print('test')
-
-    ser.close()
+    pause = True
