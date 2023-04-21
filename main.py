@@ -1,11 +1,9 @@
-from typing import TextIO
-
 import serial
 import time
 import threading
 
 
-class printThread(threading.Thread):
+class PrintThread(threading.Thread):
     def __init__(self, f, port, baudrate):
         threading.Thread.__init__(self)
         self.f = f
@@ -50,6 +48,6 @@ def runPrinter(f, port, baudrate):
 
 if __name__ == "__main__":
     f = loadGcode('test')
-    thread = printThread(f, port='COM3', baudrate=115200)
+    thread = PrintThread(f, port='COM3', baudrate=115200)
     thread.start()
     pause = True
