@@ -35,9 +35,20 @@ void loop() {
     delay(0);
   }
   if (light <= 5){
-    Serial.println("Dark", temp, humi);
+    Serial.print("Dark");
+    Serial.print(' ');
+    Serial.print(temp);
+    Serial.print(' ');
+    Serial.print(humi);
+    Serial.println();
   } else {
-    Serial.println("Light", temp, humi);
+    Serial.print("Light");
+    Serial.print(' ');
+    Serial.print(temp);
+    Serial.print(' ');
+    Serial.print(humi);
+    Serial.println();
   }
+  delay(5);
   
 }

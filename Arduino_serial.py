@@ -2,9 +2,11 @@ import serial
 
 
 def SerialRead(port, output):
-    ser = serial.Serial(port, 9800, timeout=1)
+    ser = serial.Serial(port, 9600, timeout=None)
 
-    if ser.isOpen():
+    while ser.isOpen():
         print('Connection to Arduino Successful')
+        ser.readline()
         output.append(ser.readline().decode("utf-8"))
+        ser.close()
 
