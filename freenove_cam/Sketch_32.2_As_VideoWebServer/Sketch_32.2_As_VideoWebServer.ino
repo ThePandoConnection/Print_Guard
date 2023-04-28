@@ -1,3 +1,5 @@
+//This code is provided by the freenove github: 
+
 #include "esp_camera.h"
 #include <WiFi.h>
 //

@@ -1,6 +1,8 @@
 import serial
 import time
 import threading
+from threading import Thread
+from Arduino_serial import SerialRead
 
 
 class PrintThread(threading.Thread):
@@ -50,4 +52,10 @@ if __name__ == "__main__":
     f = loadGcode('test')
     thread = PrintThread(f, port='COM3', baudrate=115200)
     thread.start()
+    output = []
+    thread1 = Thread(target=SerialRead, args=('COM4', output))
+    thread1.start()
+    thread1.join()
+    print("".join(output))
     pause = True
+

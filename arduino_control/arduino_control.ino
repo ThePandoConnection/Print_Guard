@@ -28,7 +28,6 @@ void loop() {
   light = map(light, 0, 800, 0, 10); // map light, 10 bright, 0 dark
   digitalWrite(ledPin, HIGH); // turn on light of LED button
   input = Serial.read();
-  Serial.println(input);
   if (input == 10){
     analogWrite(BuzzerPin, 128);
     delay(1000);
@@ -36,11 +35,9 @@ void loop() {
     delay(0);
   }
   if (light <= 5){
-    Serial.println("Dark");
+    Serial.println("Dark", temp, humi);
   } else {
-    Serial.println("Light");
+    Serial.println("Light", temp, humi);
   }
-  Serial.println(temp);
-  Serial.println(humi);
   
 }

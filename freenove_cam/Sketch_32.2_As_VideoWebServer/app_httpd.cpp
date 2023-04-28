@@ -216,7 +216,6 @@ const char index_web[] =
     <title>3D Printer Live View</title>\
   </head>\
   <body>\
-    <h1>3D Printer Live View</h1>\
     <img src=\"/stream\"\ style=\"transform:rotate(180deg)\"/>\
   </body>\
 </html>\

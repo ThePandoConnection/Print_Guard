@@ -6,8 +6,7 @@ import pathlib
 
 # This Keras model is based on the Tensorflow tutorial: https://www.tensorflow.org/tutorials/images/classification#a_basic_keras_model
 # It is designed as a proof of concept and only the image collection and testing is truly original.
-
-
+import get_image
 
 batch_size = 32
 img_height = 180
@@ -66,9 +65,10 @@ history = model.fit(
   epochs=epochs
 )
 
+get_image.get_image()
 
 img = tf.keras.utils.load_img(
-    #sunflower_path, target_size=(img_height, img_width)
+    'image.png', target_size=(img_height, img_width)
 )
 img_array = tf.keras.utils.img_to_array(img)
 img_array = tf.expand_dims(img_array, 0) # Create a batch
