@@ -1,7 +1,46 @@
 <!DOCTYPE html>
 {% extends "layout.html" %}
 {% block content %}
+<body>
 
-<iframe src="http://192.168.1.108" width="400" height="400"></iframe>
+
+        <div class="flex-container-display">
+            <div class="flex-child">
+                <iframe src="http://192.168.1.108" width="500" height="500"></iframe>
+            </div>
+            <div class="flex-container-information">
+            <div class="flex-child" style="text-align: center;">
+                <h2>Temperature:</h2>
+                <p> test </p>
+            </div>
+            <div class="flex-child" style="text-align: center;">
+                <h2>Humidity:</h2>
+                <p> test </p>
+                <div style="padding-top: 70%;">
+                    <a href=""> Upload GCode</a>
+                </div>
+            </div>
+            <div class="flex-child" style="text-align: center;">
+                <h2>Filament State:</h2>
+                <p> test </p>
+                <div style="padding-top: 70%;">
+                    <a href=""> Pause Print </a>
+                </div>
+            </div>
+            <div class="flex-child" style="text-align: center;">
+                <h2>Print Status:</h2>
+                <p> test </p>
+                <div style="padding-top: 70%;">
+                    <a href=""> Start Print </a>
+                </div>
+            </div>
+
+
+</div>
+
+
+        </div>
+</body>
+
 
 {% endblock content %}

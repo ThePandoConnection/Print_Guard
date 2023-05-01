@@ -17,22 +17,25 @@
     border-bottom: 2px solid gray;
 
 }
-.flex-container-details{
+.flex-container-information{
+    margin: auto;
     display: flex;
     font-family: "Open Sans";
-    height: 70%;
+    width: 80%;
+    height: 20vh;
 }
-.flex-container-details input{
-    width: 100%;
+.flex-container-display{
+    padding-top: 5%;
+    margin: auto;
+    display: flex;
+    font-family: "Open Sans";
+    width: 80%;
+    height: 20vh;
 }
-
 .flex-child {
     flex: 1;
+}
 
-}
-.flex-child menu {
-    height:20%;
-}
 .flex-child:first-child {
     margin-right: 20px;
 }
@@ -42,4 +45,3 @@
     padding-right: 10%;
     font-size: large;
 }
-
