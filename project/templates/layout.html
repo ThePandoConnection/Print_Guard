@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Print Guard</title>
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div id="content">
+    <div class="flex-container">
+
+    <div class="flex-child menu">
+        <a id="home" href="{{ url_for('home') }}">Home 🏠</a>
+
+    </div>
+
+    </div>
+    {% block content %}
+    {% endblock %}
+</div>
+</body>
+</html>

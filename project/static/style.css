@@ -1,0 +1,45 @@
+@font-face {
+    font-family: 'Dense';
+    src: url('fonts/Dense-Regular.otf')
+        format('opentype');
+}
+
+@font-face {
+    font-family: "Open Sans";
+    src: url('fonts/OpenSans-Regular.ttf')
+        format('truetype');
+}
+
+
+.flex-container {
+    display: flex;
+    font-family: "Open Sans";
+    border-bottom: 2px solid gray;
+
+}
+.flex-container-details{
+    display: flex;
+    font-family: "Open Sans";
+    height: 70%;
+}
+.flex-container-details input{
+    width: 100%;
+}
+
+.flex-child {
+    flex: 1;
+
+}
+.flex-child menu {
+    height:20%;
+}
+.flex-child:first-child {
+    margin-right: 20px;
+}
+.flex-child a{
+    text-decoration: none;
+    color: black;
+    padding-right: 10%;
+    font-size: large;
+}
+
