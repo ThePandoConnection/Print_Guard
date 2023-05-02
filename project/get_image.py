@@ -9,7 +9,7 @@ def get_image():
     driver = webdriver.Chrome('chromedriver', chrome_options=chrome_options)
 
     # URL of website
-    url = "http://192.168.1.108"
+    url = "http://172.20.10.2"
 
     # Opening the website
     driver.get(url)
