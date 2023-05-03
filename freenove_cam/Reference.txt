@@ -1,0 +1,5 @@
+This code is from the freenove github:
+https://github.com/Freenove/Freenove_Ultimate_Starter_Kit_for_ESP32
+
+it is simply being used as a library for returning an image from the camera
+This is not original code and we make no claim that it is

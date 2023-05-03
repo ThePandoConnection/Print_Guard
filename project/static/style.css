@@ -1,0 +1,77 @@
+@font-face {
+    font-family: 'Dense';
+    src: url('fonts/Dense-Regular.otf')
+        format('opentype');
+}
+
+@font-face {
+    font-family: "Open Sans";
+    src: url('fonts/OpenSans-Regular.ttf')
+        format('truetype');
+}
+
+
+.flex-container {
+    display: flex;
+    font-family: "Open Sans";
+    border-bottom: 2px solid gray;
+
+}
+.flex-container-information{
+    margin: auto;
+    display: flex;
+    font-family: "Open Sans";
+    width: 80%;
+    height: 20vh;
+}
+.flex-container-display{
+    padding-top: 5%;
+    margin: auto;
+    display: flex;
+    font-family: "Open Sans";
+    width: 80%;
+    height: 20vh;
+}
+.flex-child {
+    flex: 1;
+}
+
+.flex-child:first-child {
+    margin-right: 20px;
+}
+.flex-child a{
+    text-decoration: none;
+    color: black;
+    padding-right: 10%;
+    font-size: large;
+}
+
+.button {
+  background-color: gray;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: gray;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+}
+
+input[type="file"] {
+    display: none;
+}
