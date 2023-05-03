@@ -1,4 +1,4 @@
-# CM2306_Coursework
+# Print Guard (Group U18 CM2306 Coursework) 
 
 ## Feature Set:
 
