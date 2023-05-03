@@ -21,7 +21,7 @@
     margin: auto;
     display: flex;
     font-family: "Open Sans";
-    width: 80%;
+    width: 100vw;
     height: 20vh;
 }
 .flex-container-display{
@@ -29,7 +29,7 @@
     margin: auto;
     display: flex;
     font-family: "Open Sans";
-    width: 80%;
+    width: 90vw;
     height: 20vh;
 }
 .flex-child {
