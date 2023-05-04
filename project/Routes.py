@@ -12,6 +12,9 @@ def home():
 @app.route("/stream")
 def stream_temp():
     if request.method == 'GET':
+        output = SerialRead('COM4')
+        output.split()
+        print(output)
         temp = 20
         humi = 50
         state = 'OK'

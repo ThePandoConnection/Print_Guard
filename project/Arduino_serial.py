@@ -1,7 +1,7 @@
 import serial
 
 
-def SerialRead(port, output):
+def SerialRead(port):
     ser = serial.Serial(port, 9600, timeout=None)
 
     if ser.isOpen():
