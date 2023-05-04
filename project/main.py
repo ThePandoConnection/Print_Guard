@@ -3,7 +3,7 @@ import time
 import threading
 from threading import Thread
 #from Arduino_serial import SerialRead
-
+pause = False
 
 class PrintThread(threading.Thread):
     def __init__(self, f, port, baudrate):
