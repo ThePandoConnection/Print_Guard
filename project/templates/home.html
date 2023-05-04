@@ -39,6 +39,7 @@
 
         }
         function pause (){
+            fetch('/pause_printer')
             document.getElementById("start").innerHTML = 'Resume Print'
             document.getElementById("start").classList.remove('disabled');
             document.getElementById("start").classList.add('button');

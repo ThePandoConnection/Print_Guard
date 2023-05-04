@@ -14,9 +14,9 @@ def home():
 @app.route("/stream")
 def stream():
     if request.method == 'GET':
-        output = SerialRead('COM4')
-        output.split()
-        print(output)
+        #output = SerialRead('COM4')
+        #output.split()
+        #print(output)
         temp = 20
         humi = 50
         state = 'OK'
@@ -29,7 +29,6 @@ def start_print():
     f = loadGcode('test')
     thread = PrintThread(f, port='COM3', baudrate=115200)
     thread.start()
-    main.pause = True
 
     return Response(status=200)
 

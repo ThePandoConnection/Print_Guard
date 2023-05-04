@@ -51,5 +51,8 @@ def runPrinter(f, port, baudrate):
                 l = line.strip()  # Strip all EOL characters for streaming
                 print('Sending: ' + l)
                 ser.write((l + '\n').encode())  # Send g-code block to grbl
-                print('Received: ' + ser.readline().decode("utf-8"))
+                try:
+                    print('Received: ' + ser.readline().decode())
+                except UnicodeDecodeError:
+                    print('Received: ' + ser.readline().decode())
             ser.close()
