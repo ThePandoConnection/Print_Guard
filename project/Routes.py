@@ -1,13 +1,15 @@
 from werkzeug.utils import secure_filename
 from project import app, main
 from project.Arduino_serial import SerialRead
-from flask import render_template, redirect, url_for, request, session, jsonify
+from project.main import loadGcode, PrintThread
+from flask import render_template, redirect, url_for, request, session, jsonify, Response
 
 
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/home', methods=['POST', 'GET'])
 def home():
     return render_template("home.html")
+
 
 @app.route("/stream")
 def stream():
@@ -21,7 +23,22 @@ def stream():
         status = 'Ready'
         return jsonify(temp=temp, humi=humi, state=state, status=status)
 
-@app.route('/run_printer')
-def run_print():
-  main.run()
-  return None
+
+@app.route('/start_printer')
+def start_print():
+    f = loadGcode('test')
+    thread = PrintThread(f, port='COM3', baudrate=115200)
+    thread.start()
+    main.pause = True
+
+    return Response(status=200)
+
+@app.route('/pause_printer')
+def pause_print():
+    main.pause = True
+    return Response(status=200)
+
+@app.route('/resume_printer')
+def resume_print():
+    main.pause = False
+    return Response(status=200)

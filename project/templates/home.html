@@ -18,8 +18,17 @@
         stream()
     </script>
     <script>
+        function resume (){
+            fetch('/resume_printer')
+            document.getElementById("start").classList.remove('button');
+            document.getElementById("start").classList.add('disabled');
+
+            document.getElementById("pause").classList.remove('disabled');
+            document.getElementById("pause").classList.add('button');
+        }
         function start (){
-            fetch('/run_printer')
+            fetch('/start_printer')
+            document.getElementById("start").onclick = function() {resume()};
             document.getElementById("start").classList.remove('button');
             document.getElementById("start").classList.add('disabled');
 
@@ -30,6 +39,7 @@
 
         }
         function pause (){
+            document.getElementById("start").innerHTML = 'Resume Print'
             document.getElementById("start").classList.remove('disabled');
             document.getElementById("start").classList.add('button');
 
@@ -37,6 +47,7 @@
             document.getElementById("pause").classList.add('disabled');
 
         }
+
 
     </script>
 </head>
@@ -74,9 +85,9 @@
             <div class="flex-child" style="text-align: center;">
                 <h2>Print Status:</h2>
                 <p id="status"> N/A </p>
+
                 <div style="padding-top: 70%;">
                     <button id="start" class="button" onclick="start()">Start Print</button>
-
                 </div>
             </div>
 

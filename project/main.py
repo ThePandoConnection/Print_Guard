@@ -2,7 +2,8 @@ import serial
 import time
 import threading
 from threading import Thread
-#from Arduino_serial import SerialRead
+
+# from Arduino_serial import SerialRead
 pause = False
 
 class PrintThread(threading.Thread):
@@ -52,12 +53,3 @@ def runPrinter(f, port, baudrate):
                 ser.write((l + '\n').encode())  # Send g-code block to grbl
                 print('Received: ' + ser.readline().decode("utf-8"))
             ser.close()
-
-
-def run():
-    f = loadGcode('test')
-    thread = PrintThread(f, port='COM3', baudrate=115200)
-    thread.start()
-    pause = False
-
-
