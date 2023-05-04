@@ -1,4 +1,3 @@
-from werkzeug.utils import secure_filename
 from project import app, main
 from project.Arduino_serial import SerialRead
 from project.main import loadGcode, PrintThread
