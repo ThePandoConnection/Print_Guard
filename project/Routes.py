@@ -3,11 +3,16 @@ from project import app, main
 from project.Arduino_serial import SerialRead
 from project.main import loadGcode, PrintThread
 from flask import render_template, redirect, url_for, request, session, jsonify, Response
-
+import os
 
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/home', methods=['POST', 'GET'])
 def home():
+    if request.method == 'POST':
+        f = request.files['file']
+        f.save('print.gcode')
+        f.close()
+
     return render_template("home.html")
 
 
@@ -26,7 +31,7 @@ def stream():
 
 @app.route('/start_printer')
 def start_print():
-    f = loadGcode('test')
+    f = loadGcode('print')
     thread = PrintThread(f, port='COM3', baudrate=115200)
     thread.start()
 
