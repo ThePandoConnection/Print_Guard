@@ -19,11 +19,14 @@
     </script>
     <script>
         function start (){
+            fetch('/run_printer')
             document.getElementById("start").classList.remove('button');
             document.getElementById("start").classList.add('disabled');
 
             document.getElementById("pause").classList.remove('disabled');
             document.getElementById("pause").classList.add('button');
+
+
 
         }
         function pause (){
@@ -72,9 +75,7 @@
                 <h2>Print Status:</h2>
                 <p id="status"> N/A </p>
                 <div style="padding-top: 70%;">
-                    <form action="{{ url_for('home') }}" method="post">
-                        <button id="start" class="button" onclick="start(); form.submit()">Start Print</button>
-                    </form>
+                    <button id="start" class="button" onclick="start()">Start Print</button>
 
                 </div>
             </div>

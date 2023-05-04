@@ -2,7 +2,7 @@ import serial
 import time
 import threading
 from threading import Thread
-from Arduino_serial import SerialRead
+#from Arduino_serial import SerialRead
 
 
 class PrintThread(threading.Thread):
@@ -54,24 +54,10 @@ def runPrinter(f, port, baudrate):
             ser.close()
 
 
-if __name__ == "__main__":
+def run():
     f = loadGcode('test')
     thread = PrintThread(f, port='COM3', baudrate=115200)
     thread.start()
-    output = []
-    thread1 = Thread(target=SerialRead, args=('COM4', output))
-    thread1.start()
-    thread1.join()
-    test = "".join(output)
-    out = test.split()
-    if out[0] == 'Light':
-        print('Filament has run out!')
-        pause = True
-    if float(out[1]) < 15:
-        print('Too cold!')
-        pause = True
-    if float(out[2]) > 90:
-        print('Too humid!')
-        pause = True
+    pause = False
 
 

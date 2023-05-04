@@ -1,5 +1,5 @@
 from werkzeug.utils import secure_filename
-from project import app
+from project import app, main
 from project.Arduino_serial import SerialRead
 from flask import render_template, redirect, url_for, request, session, jsonify
 
@@ -10,7 +10,7 @@ def home():
     return render_template("home.html")
 
 @app.route("/stream")
-def stream_temp():
+def stream():
     if request.method == 'GET':
         output = SerialRead('COM4')
         output.split()
@@ -20,3 +20,8 @@ def stream_temp():
         state = 'OK'
         status = 'Ready'
         return jsonify(temp=temp, humi=humi, state=state, status=status)
+
+@app.route('/run_printer')
+def run_print():
+  main.run()
+  return None
