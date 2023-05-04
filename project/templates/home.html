@@ -72,7 +72,10 @@
                 <h2>Print Status:</h2>
                 <p id="status"> N/A </p>
                 <div style="padding-top: 70%;">
-                    <button id="start" class="button" onclick="start()">Start Print</button>
+                    <form action="{{ url_for('home') }}" method="post">
+                        <button id="start" class="button" onclick="start(); form.submit()">Start Print</button>
+                    </form>
+
                 </div>
             </div>
 
