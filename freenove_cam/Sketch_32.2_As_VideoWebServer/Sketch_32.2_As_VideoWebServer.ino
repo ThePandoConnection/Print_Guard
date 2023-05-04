@@ -13,8 +13,8 @@
 
 #include "camera_pins.h"
 
-const char* ssid     = "VM4934254";   //input your wifi name
-const char* password = "jzLhnvtS8xtr";   //input your wifi passwords
+const char* ssid     = "iPhone";   //input your wifi name
+const char* password = "notpassword";   //input your wifi passwords
 
 void startCameraServer();
 
