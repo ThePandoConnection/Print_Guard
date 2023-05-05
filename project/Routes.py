@@ -1,10 +1,15 @@
-from project import app, main, fail_classifier_training
+from werkzeug.utils import secure_filename
+from project import app, login_manager, main, fail_classifier_training
+from project.Models import User
+from project.Forms import LoginForm
 from project.Arduino_serial import SerialRead
-from project.main import loadGcode, PrintThread
-from flask import render_template, redirect, url_for, request, jsonify, Response, g
-import os
+from flask_login import login_user, logout_user, current_user
+import html
 
-# from Arduino_serial import SerialRead
+from project.main import loadGcode, PrintThread
+from flask import render_template, redirect, url_for, request, jsonify, Response, flash
+
+
 thread = None
 
 @app.route('/', methods=['POST', 'GET'])
