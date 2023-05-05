@@ -17,7 +17,7 @@ class PrintThread(threading.Thread):
 
     def run(self):
         print('Starting Print')
-        runPrinter(self.f, self.port, self.baudrate)
+        runPrinter(self.f, self.port, self.baudrate, self.pause_flag)
         print('Print Finished')
 
     def pause(self):
