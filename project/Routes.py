@@ -1,29 +1,26 @@
 from werkzeug.utils import secure_filename
-from project import app, login_manager
+from project import app, login_manager, main, fail_classifier_training
 from project.Models import User
 from project.Forms import LoginForm
 from project.Arduino_serial import SerialRead
-from flask import render_template, redirect, url_for, request, session, jsonify,flash
 from flask_login import login_user, logout_user, current_user
 import html
 
+from project.main import loadGcode, PrintThread
+from flask import render_template, redirect, url_for, request, jsonify, Response, flash
+
+
+thread = None
 
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/home', methods=['POST', 'GET'])
 def home():
-    #if current_user.is_authenticated:
-    return render_template("index.html")
-    #else:
-        #return redirect(url_for('login'))
+    if request.method == 'POST':
+        f = request.files['file']
+        f.save('print.gcode')
+        f.close()
 
-@app.route("/stream")
-def stream_temp():
-    if request.method == 'GET':
-        temp = 20
-        humi = 50
-        state = 'OK'
-        status = 'Ready'
-        return jsonify(temp=temp, humi=humi, state=state, status=status)
+    return render_template("home.html")
 
 @app.route("/login",methods=['GET','POST'])
 def login():
@@ -43,3 +40,58 @@ def logout():
     if current_user.is_authenticated:
         logout_user()
     return redirect(url_for('login'))
+
+
+@app.route("/stream")
+def stream():
+    if request.method == 'GET':
+        # output = SerialRead('COM4')
+        # output.split()
+        # print(output)
+        temp = 20
+        humi = 50
+        state = 'OK'
+        finished = False
+        try:
+            if thread.is_alive():
+                status = 'Printing'
+            else:
+                status = 'Ready'
+                finished = True
+            if (temp < 20) or (humi > 50) or (state != 'OK') and thread.is_alive():
+                error = True
+            else:
+                error = False
+        except AttributeError:
+            status = 'Ready'
+            error = False
+            finished = False
+
+        return jsonify(temp=temp, humi=humi, state=state, status=status, error=error, finished=finished)
+
+
+@app.route('/classify')
+def classify_image():
+    predicted, confidence = fail_classifier_training.get_image()
+    return jsonify(predicted=predicted, confidence=confidence)
+
+
+@app.route('/start_printer')
+def start_print():
+    global thread
+    f = loadGcode('print')
+    thread = PrintThread(f, port='COM3', baudrate=115200)
+    thread.start()
+    return Response(status=200)
+
+
+@app.route('/pause_printer')
+def pause_print():
+    thread.pause()
+    return Response(status=200)
+
+
+@app.route('/resume_printer')
+def resume_print():
+    thread.resume()
+    return Response(status=200)

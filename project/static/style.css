@@ -21,7 +21,7 @@
     margin: auto;
     display: flex;
     font-family: "Open Sans";
-    width: 80%;
+    width: 100vw;
     height: 20vh;
 }
 .flex-container-display{
@@ -29,7 +29,7 @@
     margin: auto;
     display: flex;
     font-family: "Open Sans";
-    width: 80%;
+    width: 90vw;
     height: 20vh;
 }
 .flex-child {
@@ -74,4 +74,41 @@
 
 input[type="file"] {
     display: none;
+}
+
+#overlay {
+    display: none;
+    font-family: "Open Sans";
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+
+#text{
+    font-family: "Open Sans";
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    font-size: 200%;
+    color: black;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
+/*  Overlay from https://www.w3schools.com/howto/howto_css_overlay.asp */
+
+#popup {
+    padding: 10%;
+    background-color: white;
+    border-radius:30px;
+}
+#confirm_button {
+    font-size: 100%;
 }

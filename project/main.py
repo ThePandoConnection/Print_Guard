@@ -2,8 +2,8 @@ import serial
 import time
 import threading
 from threading import Thread
-from Arduino_serial import SerialRead
 
+# from Arduino_serial import SerialRead
 
 class PrintThread(threading.Thread):
     def __init__(self, f, port, baudrate):
@@ -11,11 +11,22 @@ class PrintThread(threading.Thread):
         self.f = f
         self.port = port
         self.baudrate = baudrate
+        self.pause_flag = threading.Event()  # Flag for pausing the thread
+        self.pause_flag.clear()
 
     def run(self):
         print('Starting Print')
-        runPrinter(self.f, self.port, self.baudrate)
+        runPrinter(self.f, self.port, self.baudrate, self.pause_flag)
         print('Print Finished')
+
+    def pause(self):
+        self.pause_flag.set()
+
+    def resume(self):
+        self.pause_flag.clear()
+
+    def isPaused(self):
+        return self.pause_flag.is_set()
 
 
 def loadGcode(file):
@@ -23,7 +34,7 @@ def loadGcode(file):
     return f
 
 
-def runPrinter(f, port, baudrate):
+def runPrinter(f, port, baudrate, pause_flag):
     fail = False
     try:
         ser = serial.Serial(port=port, baudrate=baudrate)
@@ -44,34 +55,14 @@ def runPrinter(f, port, baudrate):
             ser.flushInput()
 
             for line in f:
-                while pause:
+                while pause_flag.is_set():
                     time.sleep(5)
                     print('paused')
                 l = line.strip()  # Strip all EOL characters for streaming
                 print('Sending: ' + l)
                 ser.write((l + '\n').encode())  # Send g-code block to grbl
-                print('Received: ' + ser.readline().decode("utf-8"))
+                try:
+                    print('Received: ' + ser.readline().decode())
+                except UnicodeDecodeError:
+                    print('Received: ' + ser.readline().decode())
             ser.close()
-
-
-if __name__ == "__main__":
-    f = loadGcode('test')
-    thread = PrintThread(f, port='COM3', baudrate=115200)
-    thread.start()
-    output = []
-    thread1 = Thread(target=SerialRead, args=('COM4', output))
-    thread1.start()
-    thread1.join()
-    test = "".join(output)
-    out = test.split()
-    if out[0] == 'Light':
-        print('Filament has run out!')
-        pause = True
-    if float(out[1]) < 15:
-        print('Too cold!')
-        pause = True
-    if float(out[2]) > 90:
-        print('Too humid!')
-        pause = True
-
-
