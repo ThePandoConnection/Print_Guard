@@ -1,4 +1,5 @@
 from project import app
+from project import Routes
 
 if __name__ == '__main__':
 
