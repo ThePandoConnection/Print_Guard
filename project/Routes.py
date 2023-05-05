@@ -47,8 +47,7 @@ def stream():
     if request.method == 'GET':
         # output = SerialRead('COM4')
         # output.split()
-        # print(output)
-        temp = 20
+        temp = 19
         humi = 50
         state = 'OK'
         finished = False
@@ -58,7 +57,8 @@ def stream():
             else:
                 status = 'Ready'
                 finished = True
-            if (temp < 20) or (humi > 50) or (state != 'OK') and thread.is_alive():
+            if ((temp < 20) or (humi > 50) or (state != 'OK')) and (thread.is_alive() and (not thread.isPaused())):
+                print('here')
                 error = True
             else:
                 error = False
@@ -72,16 +72,20 @@ def stream():
 
 @app.route('/classify')
 def classify_image():
-    predicted, confidence = fail_classifier_training.get_image()
+    predicted, confidence = fail_classifier_training.classifyImage()
     return jsonify(predicted=predicted, confidence=confidence)
 
 
 @app.route('/start_printer')
 def start_print():
     global thread
-    f = loadGcode('print')
-    thread = PrintThread(f, port='COM3', baudrate=115200)
-    thread.start()
+    try:
+        f = loadGcode('print')
+        thread = PrintThread(f, port='COM3', baudrate=115200)
+        thread.start()
+    except FileNotFoundError:
+        flash('Please upload a file first')
+
     return Response(status=200)
 
 
