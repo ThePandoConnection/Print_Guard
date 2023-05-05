@@ -4,7 +4,6 @@ import threading
 from threading import Thread
 
 # from Arduino_serial import SerialRead
-pause = False
 
 class PrintThread(threading.Thread):
     def __init__(self, f, port, baudrate):
@@ -25,6 +24,9 @@ class PrintThread(threading.Thread):
 
     def resume(self):
         self.pause_flag.clear()
+
+    def isPaused(self):
+        return self.pause_flag.is_set()
 
 
 def loadGcode(file):
