@@ -12,10 +12,31 @@
                 document.getElementById("humidity").innerHTML = text.humi;
                 document.getElementById("filament").innerHTML = text.state;
                 document.getElementById("status").innerHTML = text.status;
+                if (text.error){
+                    on()
+                    pause()
+                }
+                if (text.done){
+
+                }
             });
             setTimeout(stream, 5000);
         }
         stream()
+    </script>
+    <script>
+        function classify() {
+            fetch('/classify')
+                .then(function (response) {
+                    return response.json();
+                }).then(function (text) {
+                if (text.predicted == 'Spaghetti' && text.confidence > 0.7){
+                    on()
+                    pause()
+                }
+            });
+            setTimeout(stream, 600000);
+        }
     </script>
     <script>
         function resume (){
@@ -51,9 +72,22 @@
 
 
     </script>
+
 </head>
 <body>
-
+<!-- Overlay from https://www.w3schools.com/howto/howto_css_overlay.asp -->
+<div id="overlay">
+  <div id="text">
+      <div id="popup">
+              <p id="popup-text"> We think an error occurred with the printer! </p>
+                <br/>
+                <br/>
+                <input id="confirm_button" onclick="off()" type = "submit" value = "OK!" />
+          </form>
+      </div>
+  </div>
+<!-- Overlay from https://www.w3schools.com/howto/howto_css_overlay.asp -->
+</div>
 
         <div class="flex-container-display">
             <div class="flex-child">
@@ -96,6 +130,19 @@
             </div>
 
         </div>
+
+    <!-- Overlay from https://www.w3schools.com/howto/howto_css_overlay.asp -->
+    <script>
+        function on() {
+            document.getElementById("overlay").style.display = "block";
+        }
+        function off() {
+            document.getElementById("overlay").style.display = "none";
+    }
+    </script>
+
+    <!-- Overlay from https://www.w3schools.com/howto/howto_css_overlay.asp -->
+
 </body>
 
 

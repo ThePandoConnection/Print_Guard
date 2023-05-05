@@ -12,11 +12,19 @@ class PrintThread(threading.Thread):
         self.f = f
         self.port = port
         self.baudrate = baudrate
+        self.pause_flag = threading.Event()  # Flag for pausing the thread
+        self.pause_flag.clear()
 
     def run(self):
         print('Starting Print')
         runPrinter(self.f, self.port, self.baudrate)
         print('Print Finished')
+
+    def pause(self):
+        self.pause_flag.set()
+
+    def resume(self):
+        self.pause_flag.clear()
 
 
 def loadGcode(file):
@@ -24,7 +32,7 @@ def loadGcode(file):
     return f
 
 
-def runPrinter(f, port, baudrate):
+def runPrinter(f, port, baudrate, pause_flag):
     fail = False
     try:
         ser = serial.Serial(port=port, baudrate=baudrate)
@@ -45,7 +53,7 @@ def runPrinter(f, port, baudrate):
             ser.flushInput()
 
             for line in f:
-                while pause:
+                while pause_flag.is_set():
                     time.sleep(5)
                     print('paused')
                 l = line.strip()  # Strip all EOL characters for streaming
