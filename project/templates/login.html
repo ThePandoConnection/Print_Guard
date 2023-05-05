@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+{% block content %}
+  <head> <link rel="stylesheet" href="{{ url_for('static', filename='styleslogin.css') }}"></head>
+  <body>
+    <form id="login-form" method="POST" action="">
+      {{ form.csrf_token }}
+      <div class= "login-wrapper">
+        <h1>Print Guard</h1>
+        <p class="login-fields">{{ form.username.label }} {{ form.username }}</p>
+        <p class="login-fields">{{ form.password.label }} {{ form.password }}</p>
+      </div>
+      <p class="login-submit"><input class="login-submit-btn" type="submit" value="Login"></p>
+    </form>
+    <p></p>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for message in messages %}
+            <li class = "login_error">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+  </body>
+{% endblock %}

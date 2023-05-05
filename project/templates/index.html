@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+{% block content %}
+
+<head>
+  <script>
+    function openSetting(event, settingName) {
+      const settingContent = document.getElementsByClassName('settings-content');
+      for (let i=0; i<settingContent.length; i++) {
+        settingContent[i].style.display ='none';
+      }
+      const settingsLinks = document.getElementsByClassName('setting-link');
+      for (let i=0; i<settingsLinks.length; i++) {
+        settingsLinks[i].classList.remove('active');
+      }
+      document.getElementById(settingName).style.display = 'block';
+      event.currentTarget.classList.add('active');
+    }
+    document.getElementsByClassName('setting-link')[0].click();
+</script>
+<script>
+    function stream() {
+        fetch('/stream')
+            .then(function (response) {
+                return response.json();
+            }).then(function (text) {
+            document.getElementById("temperature").innerHTML = text.temp;
+            document.getElementById("humidity").innerHTML = text.humi;
+            document.getElementById("filament").innerHTML = text.state;
+            document.getElementById("status").innerHTML = text.status;
+        });
+        setTimeout(stream, 5000);
+    }
+    stream()
+</script>
+<script>
+    function start (){
+        document.getElementById("start").classList.remove('button');
+        document.getElementById("start").classList.add('disabled');
+
+        document.getElementById("pause").classList.remove('disabled');
+        document.getElementById("pause").classList.add('button');
+
+    }
+
+    function pause (){
+        document.getElementById("start").classList.remove('disabled');
+        document.getElementById("start").classList.add('button');
+
+        document.getElementById("pause").classList.remove('button');
+        document.getElementById("pause").classList.add('disabled');
+
+    }
+  </script>
+</head>
+
+
+<body>
+  <h1>Print Guard</h1>
+
+  <div class="container">
+    <div class = "contained-item">
+      <div class="video-container">
+        <iframe id="video-iframe" src="http://172.20.10.2" frameborder="0" allowfullscreen></iframe>
+        <button id="pause" class="button" onclick="pause()">Pause Print</button>
+        <button id="start" class="button" onclick="start()">Start Print</button>
+      </div>
+    </div>
+
+    <div class = "contained-item">
+      <div class="settings-container">
+        <div class="settings">
+          <button class="setting-link" onclick="openSetting(event, 'Temperature')">Temperature</button>
+          <button class="setting-link" onclick="openSetting(event, 'Humidity')">Humidity</button>
+          <button class="setting-link" onclick="openSetting(event, 'Filament')">Filament</button>
+          <button class="setting-link" onclick="openSetting(event, 'Status')">Status</button>
+        </div>
+        <div class="settings-content" id="Temperature">
+          <h2>Vital info</h2>
+          <p id="temperature"> 0 </p>
+        </div>
+        <div class="settings-content" id="Humidity" style="display: none;">
+          <h2>Non Vital info</h2>
+          <p id="humidity"> 0 </p>
+        </div>
+        <div class="settings-content" id="Filament" style="display: none;">
+          <h2>Non Vital info 2</h2>
+          <p id="filament"> N/A </p>
+        </div>
+        <div class="settings-content" id="Status" style="display: none;">
+          <h2>Filament</h2>
+            <p id="status"> N/A </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class = "content">
+    <form action = "" method = "post" enctype="multipart/form-data">
+        <label class="button">
+          <input type="file" name="file" onchange="form.submit()"/>
+               Upload G-code
+        </label>
+    </form>
+  </div>
+
+</body>
+</html>
+
+{% endblock content %}
