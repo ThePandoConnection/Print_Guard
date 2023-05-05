@@ -1,5 +1,5 @@
 from werkzeug.utils import secure_filename
-from project import app, login_manager, main, fail_classifier_training
+from project import app, login_manager, fail_classifier_training
 from project.Models import User
 from project.Forms import LoginForm
 from project.Arduino_serial import SerialRead
@@ -20,7 +20,7 @@ def home():
         f.save('print.gcode')
         f.close()
 
-    return render_template("home.html")
+    return render_template("index.html")
 
 @app.route("/login",methods=['GET','POST'])
 def login():

@@ -18,93 +18,157 @@
     }
     document.getElementsByClassName('setting-link')[0].click();
 </script>
-<script>
-    function stream() {
-        fetch('/stream')
-            .then(function (response) {
-                return response.json();
-            }).then(function (text) {
-            document.getElementById("temperature").innerHTML = text.temp;
-            document.getElementById("humidity").innerHTML = text.humi;
-            document.getElementById("filament").innerHTML = text.state;
-            document.getElementById("status").innerHTML = text.status;
-        });
-        setTimeout(stream, 5000);
-    }
-    stream()
-</script>
-<script>
-    function start (){
-        document.getElementById("start").classList.remove('button');
-        document.getElementById("start").classList.add('disabled');
+    <script>
+        function stream() {
+            fetch('/stream')
+                .then(function (response) {
+                    return response.json();
+                }).then(function (text) {
+                document.getElementById("temperature").innerHTML = text.temp;
+                document.getElementById("humidity").innerHTML = text.humi;
+                document.getElementById("filament").innerHTML = text.state;
+                document.getElementById("status").innerHTML = text.status;
+                if (text.error){
+                    on()
+                    pause()
+                }
+                if (text.finished){
+                    document.getElementById("start").onclick = function() {start()};
+                    document.getElementById("start").classList.remove('disabled');
+                    document.getElementById("start").classList.add('button');
+                }
+            });
+            setTimeout(stream, 5000);
+        }
+        stream()
+    </script>
+    <script>
+        function classify() {
+            fetch('/classify')
+                .then(function (response) {
+                    return response.json();
+                }).then(function (text) {
+                if (text.predicted == 'Spaghetti' && text.confidence > 0.7){
+                    on()
+                    pause()
+                }
+            });
+            setTimeout(stream, 600000);
+        }
+        classify()
+    </script>
+    <script>
+        function resume (){
+            fetch('/resume_printer')
+            document.getElementById("start").classList.remove('button');
+            document.getElementById("start").classList.add('disabled');
 
-        document.getElementById("pause").classList.remove('disabled');
-        document.getElementById("pause").classList.add('button');
+            document.getElementById("pause").classList.remove('disabled');
+            document.getElementById("pause").classList.add('button');
+        }
+        function start (){
+            fetch('/start_printer')
+            document.getElementById("start").onclick = function() {resume()};
+            document.getElementById("start").classList.remove('button');
+            document.getElementById("start").classList.add('disabled');
 
-    }
+            document.getElementById("pause").classList.remove('disabled');
+            document.getElementById("pause").classList.add('button');
 
-    function pause (){
-        document.getElementById("start").classList.remove('disabled');
-        document.getElementById("start").classList.add('button');
+        }
+        function pause (){
+            fetch('/pause_printer')
+            document.getElementById("start").innerHTML = 'Resume Print'
+            document.getElementById("start").classList.remove('disabled');
+            document.getElementById("start").classList.add('button');
 
-        document.getElementById("pause").classList.remove('button');
-        document.getElementById("pause").classList.add('disabled');
+            document.getElementById("pause").classList.remove('button');
+            document.getElementById("pause").classList.add('disabled');
 
-    }
-  </script>
+        }
+
+
+    </script>
 </head>
 
 
 <body>
+
+<!-- Overlay from https://www.w3schools.com/howto/howto_css_overlay.asp -->
+<div id="overlay">
+  <div id="text">
+      <div id="popup">
+              <p id="popup-text"> We think an error occurred with the printer! </p>
+                <br/>
+                <br/>
+                <input id="confirm_button" onclick="off()" type = "submit" value = "OK!" />
+          </form>
+      </div>
+  </div>
+</div>
+<!-- Overlay from https://www.w3schools.com/howto/howto_css_overlay.asp -->
+
   <h1>Print Guard</h1>
 
   <div class="container">
     <div class = "contained-item">
       <div class="video-container">
-        <iframe id="video-iframe" src="http://172.20.10.2" frameborder="0" allowfullscreen></iframe>
-        <button id="pause" class="button" onclick="pause()">Pause Print</button>
-        <button id="start" class="button" onclick="start()">Start Print</button>
+        <iframe id="video-iframe" src="http://172.20.10.2/stream" width="640" height="500 "></iframe>
       </div>
     </div>
 
     <div class = "contained-item">
       <div class="settings-container">
         <div class="settings">
-          <button class="setting-link" onclick="openSetting(event, 'Temperature')">Temperature</button>
-          <button class="setting-link" onclick="openSetting(event, 'Humidity')">Humidity</button>
-          <button class="setting-link" onclick="openSetting(event, 'Filament')">Filament</button>
-          <button class="setting-link" onclick="openSetting(event, 'Status')">Status</button>
+          <button class="setting-link" onclick="openSetting(event, 'temperature-head')">Temperature</button>
+          <button class="setting-link" onclick="openSetting(event, 'humidity-head')">Humidity</button>
+          <button class="setting-link" onclick="openSetting(event, 'filament-head')">Filament</button>
+          <button class="setting-link" onclick="openSetting(event, 'status-head')">Status</button>
         </div>
-        <div class="settings-content" id="Temperature">
-          <h2>Vital info</h2>
+        <div class="settings-content" id="temperature-head">
+          <h2>Temperature</h2>
           <p id="temperature"> 0 </p>
         </div>
-        <div class="settings-content" id="Humidity" style="display: none;">
-          <h2>Non Vital info</h2>
+        <div class="settings-content" id="humidity-head" style="display: none;">
+          <h2>Humidity</h2>
           <p id="humidity"> 0 </p>
         </div>
-        <div class="settings-content" id="Filament" style="display: none;">
-          <h2>Non Vital info 2</h2>
+        <div class="settings-content" id="filament-head" style="display: none;">
+          <h2>Filament State</h2>
           <p id="filament"> N/A </p>
         </div>
-        <div class="settings-content" id="Status" style="display: none;">
-          <h2>Filament</h2>
+        <div class="settings-content" id="status-head" style="display: none;">
+          <h2>Print Status</h2>
             <p id="status"> N/A </p>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div class = "content">
-    <form action = "" method = "post" enctype="multipart/form-data">
+      <div class = "content">
+        <form action = "" method = "post" enctype="multipart/form-data">
         <label class="button">
           <input type="file" name="file" onchange="form.submit()"/>
                Upload G-code
         </label>
-    </form>
+        </form>
+        <button id="pause" class="button" onclick="pause()">Pause Print</button>
+        <button id="start" class="button" onclick="start()">Start Print</button>
+  </div>
+    </div>
   </div>
 
+
+
+      <!-- Overlay from https://www.w3schools.com/howto/howto_css_overlay.asp -->
+    <script>
+        function on() {
+            document.getElementById("overlay").style.display = "block";
+        }
+        function off() {
+            document.getElementById("overlay").style.display = "none";
+    }
+    </script>
+
+    <!-- Overlay from https://www.w3schools.com/howto/howto_css_overlay.asp -->
+
 </body>
-</html>
 
 {% endblock content %}

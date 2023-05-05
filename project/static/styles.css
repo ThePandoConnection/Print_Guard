@@ -1,8 +1,6 @@
 
 body{
-  margin: 5;
   font-family: Arial, sans-serif;
-  background-color: #f6faf3;
 }
 h1{
   font-size: 42px;
@@ -15,19 +13,32 @@ h1{
   display: flex;
   flex-wrap: wrap;
 }
-button,.button{
+button, .button{
+  font-family: Arial, sans-serif;
   background-color: #F0f0f0;
   border: 2px solid black;
   transition-duration: 0.4s;
   border-radius: 3px;
   padding: 12px 28px;
 }
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  font-family: Arial, sans-serif;
+  background-color: #F0f0f0;
+  border: 2px solid black;
+  transition-duration: 0.4s;
+  border-radius: 3px;
+  padding: 12px 28px;
+}
+
 button:hover,.button:hover{
-  background-color: #4CAF50;
+  background-color: gray;
   color: white;
 }
 button.active,.button:active{
-  background-color: #4CAF50;
+  background-color: gray;
   color: white;
 }
 /* this improves HFI by preventing the video and settings being too small to be displayed */
@@ -44,7 +55,7 @@ button.active,.button:active{
 .settings-container{
   width: inherit;
   padding: 20px;
-  border: rgba(76, 175, 80, 0.2) solid;
+  border: gray solid;
   border-radius: 3px;
 }
 .video-container{
@@ -62,10 +73,6 @@ button.active,.button:active{
 .content button {
   margin: 0 10px;
 }
-#video-iframe{
-  min-width: 100%;
-  height:auto;
-}
 input[type="file"] {
     display: none;
 }
@@ -76,6 +83,43 @@ input[type="file"] {
 @media (max-width:768px){
   .contained-item {
     flex-basis: 100%;
-    min-width: none;
   }
 }
+
+#overlay {
+    display: none;
+    font-family: "Open Sans";
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+
+#text{
+    font-family: "Open Sans";
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    font-size: 200%;
+    color: black;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
+/*  Overlay from https://www.w3schools.com/howto/howto_css_overlay.asp */
+
+#popup {
+    padding: 10%;
+    background-color: white;
+    border-radius:30px;
+}
+#confirm_button {
+    font-size: 100%;
+}
+
