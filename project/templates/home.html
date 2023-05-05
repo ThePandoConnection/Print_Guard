@@ -16,8 +16,10 @@
                     on()
                     pause()
                 }
-                if (text.done){
-
+                if (text.finished){
+                    document.getElementById("start").onclick = function() {start()};
+                    document.getElementById("start").classList.remove('disabled');
+                    document.getElementById("start").classList.add('button');
                 }
             });
             setTimeout(stream, 5000);

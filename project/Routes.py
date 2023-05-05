@@ -27,15 +27,24 @@ def stream():
         temp = 20
         humi = 50
         state = 'OK'
-
-        if (temp < 20) or (humi > 50) or (state != 'OK') and thread.is_alive():
-            print('here')
-            error = True
-        else:
+        finished = False
+        try:
+            if thread.is_alive():
+                status = 'Printing'
+            else:
+                status = 'Ready'
+                finished = True
+            if (temp < 20) or (humi > 50) or (state != 'OK') and thread.is_alive():
+                print('here')
+                error = True
+            else:
+                error = False
+        except AttributeError:
+            status = 'Ready'
             error = False
-        status = 'Ready'
+            finished = False
 
-        return jsonify(temp=temp, humi=humi, state=state, status=status, error=error)
+        return jsonify(temp=temp, humi=humi, state=state, status=status, error=error, finished=finished)
 
 
 @app.route('/classify')
