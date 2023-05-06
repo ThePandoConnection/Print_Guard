@@ -4,3 +4,4 @@
 /venv
 image.png
 /print.gcode
+/__pycache__
