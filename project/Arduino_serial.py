@@ -12,13 +12,9 @@ def SerialRead(port):
 
 
 def SerialWrite(port):
-    success = False
-    ser = serial.Serial(port, 9600, timeout=None)
+    ser = serial.Serial(port, 9800, timeout=None)
 
     if ser.isOpen():
-        ser.readline()
-        ser.write(10)
+        ser.write('10\n'.encode())
         ser.close()
-        success = True
-    return success
 

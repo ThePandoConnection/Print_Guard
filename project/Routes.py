@@ -1,3 +1,4 @@
+import serial.serialutil
 from werkzeug.utils import secure_filename
 from project import app, login_manager, fail_classifier_training
 from project.Models import User
@@ -47,28 +48,36 @@ def logout():
 @app.route("/stream")
 def stream():
     if request.method == 'GET':
-        output = SerialRead('COM4')
-        out = output.split()
-        if out[0] == 'Light':
-            state = '!OK'
-        else:
-            state = 'OK'
-        temp = out[1]
-        humi = out[2]
-        finished = False
         try:
-            if thread.is_alive():
-                status = 'Printing'
+            output = SerialRead('COM6')
+            out = output.split()
+            if out[0] == 'Light':
+                state = '!OK'
             else:
+                state = 'RUNOUT!'
+            temp = out[1]
+            humi = out[2]
+            finished = False
+            try:
+                if thread.is_alive():
+                    status = 'Printing'
+                else:
+                    status = 'Ready'
+                    finished = True
+                if ((float(temp) < 20) or (float(humi) > 50) or (state != 'OK')) and (thread.is_alive() and (not thread.isPaused())):
+                    error = True
+                    SerialWrite('COM6')
+                else:
+                    error = False
+            except AttributeError:
                 status = 'Ready'
-                finished = True
-            if ((temp < 20) or (humi > 50) or (state != 'OK')) and (thread.is_alive() and (not thread.isPaused())):
-                error = True
-                SerialWrite('COM4')
-            else:
                 error = False
-        except AttributeError:
-            status = 'Ready'
+                finished = False
+        except serial.serialutil.SerialException:
+            temp = 20
+            humi = 50
+            state = 'OK'
+            status = 'Unknown'
             error = False
             finished = False
 

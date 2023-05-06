@@ -27,8 +27,13 @@ void loop() {
   humi = dht.readHumidity();
   light = map(light, 0, 800, 0, 10); // map light, 10 bright, 0 dark
   digitalWrite(ledPin, HIGH); // turn on light of LED button
-  input = Serial.read();
-  if (input == 10){
+  if (Serial.available() > 0){
+      input = Serial.read();
+  } else {
+    input = 0;
+  }
+  
+  if (input > 10){
     analogWrite(BuzzerPin, 128);
     delay(1000);
     analogWrite(BuzzerPin, 0);
