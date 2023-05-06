@@ -45,11 +45,14 @@ def logout():
 @app.route("/stream")
 def stream():
     if request.method == 'GET':
-        # output = SerialRead('COM4')
-        # output.split()
-        temp = 19
-        humi = 50
-        state = 'OK'
+        output = SerialRead('COM4')
+        out = output.split()
+        if out[0] == 'Light':
+            state = '!OK'
+        else:
+            state = 'OK'
+        temp = out[1]
+        humi = out[2]
         finished = False
         try:
             if thread.is_alive():
@@ -58,7 +61,6 @@ def stream():
                 status = 'Ready'
                 finished = True
             if ((temp < 20) or (humi > 50) or (state != 'OK')) and (thread.is_alive() and (not thread.isPaused())):
-                print('here')
                 error = True
             else:
                 error = False
