@@ -10,3 +10,15 @@ def SerialRead(port):
         ser.close()
     return output
 
+
+def SerialWrite(port):
+    success = False
+    ser = serial.Serial(port, 9600, timeout=None)
+
+    if ser.isOpen():
+        ser.readline()
+        ser.write(10)
+        ser.close()
+        success = True
+    return success
+
