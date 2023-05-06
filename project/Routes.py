@@ -2,15 +2,15 @@ from werkzeug.utils import secure_filename
 from project import app, login_manager, fail_classifier_training
 from project.Models import User
 from project.Forms import LoginForm
-from project.Arduino_serial import SerialRead
+from project.Arduino_serial import SerialRead, SerialWrite
 from flask_login import login_user, logout_user, current_user
 import html
 
 from project.main import loadGcode, PrintThread
 from flask import render_template, redirect, url_for, request, jsonify, Response, flash
 
-
 thread = None
+
 
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/home', methods=['POST', 'GET'])
@@ -22,18 +22,20 @@ def home():
 
     return render_template("index.html")
 
-@app.route("/login",methods=['GET','POST'])
+
+@app.route("/login", methods=['GET', 'POST'])
 def login():
-  form = LoginForm()
-  error=None
-  if form.validate_on_submit():
-    #user =  User.query.filter_by(username=form.username.data).first()
-    #if user is not None and True: #user.verify_password(form.password.data)
-    #  login_user(user)
-     #flash(html.escape(current_user.username) +' Logged in')
-     return redirect(url_for('home'))
-    #flash('Incorrect username or password combination.')
-  return render_template('login.html', form=form)
+    form = LoginForm()
+    error = None
+    if form.validate_on_submit():
+        # user =  User.query.filter_by(username=form.username.data).first()
+        # if user is not None and True: #user.verify_password(form.password.data)
+        #  login_user(user)
+        # flash(html.escape(current_user.username) +' Logged in')
+        return redirect(url_for('home'))
+    # flash('Incorrect username or password combination.')
+    return render_template('login.html', form=form)
+
 
 @app.route("/logout")
 def logout():
@@ -62,6 +64,7 @@ def stream():
                 finished = True
             if ((temp < 20) or (humi > 50) or (state != 'OK')) and (thread.is_alive() and (not thread.isPaused())):
                 error = True
+                SerialWrite('COM4')
             else:
                 error = False
         except AttributeError:
