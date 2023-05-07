@@ -44,18 +44,21 @@
     </script>
     <script>
         function classify() {
-            fetch('/classify')
-                .then(function (response) {
-                    return response.json();
-                }).then(function (text) {
-                if (text.predicted == 'Spaghetti' && text.confidence > 0.7){
-                    on()
-                    pause()
-                }
-            });
-            setTimeout(stream, 6000);
+          fetch('/classify')
+              .then(function (response) {
+                  return response.json();
+              }).then(function (text) {
+              if (text.predicted == 'Spaghetti'){
+                  on()
+                  pause()
+              }
+          });
+          setTimeout(classify, 6000);
         }
         classify()
+    </script>
+    <script>
+
     </script>
     <script>
         function resume (){
@@ -113,7 +116,7 @@
   <div class="container">
     <div class = "contained-item">
       <div class="video-container">
-        <iframe id="video-iframe" src="http://192.168.0.210/stream" width="640" height="500 "></iframe>
+        <iframe id="video-iframe" src="{{url_for('stream_url')}}" width="640" height="500"></iframe>
       </div>
     </div>
 
@@ -158,14 +161,14 @@
 
 
       <!-- Overlay from https://www.w3schools.com/howto/howto_css_overlay.asp -->
-    <script>
-        function on() {
-            document.getElementById("overlay").style.display = "block";
-        }
-        function off() {
-            document.getElementById("overlay").style.display = "none";
-    }
-    </script>
+  <script>
+      function on() {
+          document.getElementById("overlay").style.display = "block";
+      }
+      function off() {
+          document.getElementById("overlay").style.display = "none";
+  }
+  </script>
 
     <!-- Overlay from https://www.w3schools.com/howto/howto_css_overlay.asp -->
 

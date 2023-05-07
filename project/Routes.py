@@ -1,4 +1,5 @@
 import serial.serialutil
+import requests
 from werkzeug.utils import secure_filename
 from project import app, login_manager, fail_classifier_training
 from project.Models import User
@@ -6,9 +7,11 @@ from project.Forms import LoginForm
 from project.Arduino_serial import SerialRead, SerialWrite
 from flask_login import login_user, logout_user, current_user
 import html
+import cv2
+import numpy as np
 
 from project.main import loadGcode, PrintThread
-from flask import render_template, redirect, url_for, request, jsonify, Response, flash
+from flask import render_template, redirect, url_for, request, jsonify, Response, flash, stream_with_context
 
 thread = None
 
@@ -43,6 +46,38 @@ def logout():
     if current_user.is_authenticated:
         logout_user()
     return redirect(url_for('login'))
+
+def gen_frames():
+    url = 'http://192.168.0.210/stream'
+    while True:
+        response = requests.get(url, stream=True)
+        if response.status_code == 200:
+            # Read the response data and convert it to a NumPy array
+            data = b""
+            for chunk in response.iter_content(chunk_size=1024):
+                data += chunk
+                a = data.find(b"\xff\xd8")
+                b = data.find(b"\xff\xd9")
+                if a != -1 and b != -1:
+                    jpg = data[a:b+2]
+                    data = data[b+2:]
+                    frame = cv2.imdecode(np.frombuffer(jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
+                    cv2.imwrite('./camera/image.jpg', frame)
+
+                    # Convert the OpenCV frame to a byte string
+                    ret, buffer = cv2.imencode('.jpg', frame)
+                    frame = buffer.tobytes()
+
+                    # Yield the byte string as a Flask response
+                    yield (b'--frame\r\n'
+                            b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        else:
+            # If the response status code is not 200, break the loop
+            break
+
+@app.route('/stream_url')
+def stream_url():
+    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route("/stream")
@@ -86,10 +121,7 @@ def stream():
 
 @app.route('/classify')
 def classify_image():
-    print('here')
-    predicted, confidence = fail_classifier_training.classifyImage()
-    print(predicted)
-    print(confidence)
+    predicted, confidence = fail_classifier_training.classifyImage('flask')
     return jsonify(predicted=predicted, confidence=confidence)
 
 

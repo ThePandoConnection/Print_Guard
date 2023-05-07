@@ -64,7 +64,7 @@ def classifyImage():
     get_image.get_image()
 
     img = tf.keras.utils.load_img(
-        './camera/corrected.jpg', target_size=(img_height, img_width)
+        './camera/image.jpg', target_size=(img_height, img_width)
     )
     img_array = tf.keras.utils.img_to_array(img)
     img_array = tf.expand_dims(img_array, 0)  # Create a batch

@@ -254,7 +254,7 @@ void startCameraServer()
         .uri = "/stream",
         .method = HTTP_GET,
         .handler = stream_handler,
-        .user_ctx = NULL};
+        .user_ctx = NULL};  
     ra_filter_init(&ra_filter, 20);
 
     ESP_LOGI(TAG, "Starting web server on port: '%d'", config.server_port);
