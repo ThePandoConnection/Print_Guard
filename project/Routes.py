@@ -44,12 +44,13 @@ def login():
     form = LoginForm()
     error = None
     if form.validate_on_submit():
-        # user =  User.query.filter_by(username=form.username.data).first()
-        # if user is not None and True: #user.verify_password(form.password.data)
-        #  login_user(user)
-        # flash(html.escape(current_user.username) +' Logged in')
-        return redirect(url_for('home'))
-    # flash('Incorrect username or password combination.')
+        user =  User.query.filter_by(username=form.username.data).first()
+        if user is not None and True:
+            user.verify_password(form.password.data)
+            login_user(user)
+            flash(html.escape(current_user.username) +' Logged in')
+            return redirect(url_for('home'))
+    flash('Incorrect username or password combination.')
     return render_template('login.html', form=form)
 
 

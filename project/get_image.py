@@ -15,7 +15,7 @@ def get_image():
     except FileNotFoundError:
         None
     try:
-        os.remove('./camera/corrected.jpg')
+        os.remove('./camera/image.jpg')
     except FileNotFoundError:
         None
 
