@@ -2,6 +2,29 @@
 body{
   font-family: Arial, sans-serif;
 }
+
+#theHeader a
+{
+  font-family: Arial, sans-serif;
+  background-color: #F0f0f0;
+  border: 2px solid black;
+  transition-duration: 0.4s;
+  border-radius: 3px;
+  padding: 12px 28px;
+}
+
+#theHeader a:hover
+{
+  background-color: gray;
+  color: white;
+}
+
+#theHeader a:active
+{
+  background-color: gray;
+  color: white;
+}
+
 h1{
   font-size: 42px;
   text-align: center;

@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 {% extends "layout.html" %}
 {% block content %}
-  <head> <link rel="stylesheet" href="{{ url_for('static', filename='styleslogin.css') }}"></head>
+  <head> <link rel="stylesheet" href="{{ url_for('static', filename='stylesRegister.css') }}"></head>
   <body>
-    <form id="login-form" method="POST" action="">
+    <form id="register-form" method="POST" action="">
       {{ form.csrf_token }}
-      <div class= "login-wrapper">
+      <div class= "register-wrapper">
         <h1>Print Guard</h1>
-        <p class="login-fields">{{ form.username.label }} {{ form.username }}</p>
-        <p class="login-fields">{{ form.password.label }} {{ form.password }}</p>
+        <p class="register-fields">{{ form.username_new.label }} {{ form.username_new }}</p>
+        <p class="register-fields">{{ form.password_new.label }} {{ form.password_new }}</p>
+        <p class="register-fields">{{ form.password_confirm.label }} {{ form.password_confirm }}</p>
       </div>
-      <p class="login-submit"><input class="login-submit-btn" type="submit" value="Login"></p>
+      <p class="register-submit"><input class="register-submit-btn" type="submit" value="Register user"></p>
     </form>
     <p></p>
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         <ul class="flashes">
           {% for message in messages %}
-            <li class = "login_error">{{ message }}</li>
+            <li class = "register_error">{{ message }}</li>
           {% endfor %}
         </ul>
       {% endif %}
