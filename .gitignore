@@ -7,3 +7,5 @@ image.png
 /camera/image.png
 /camera/corrected.jpg
 /camera/image.jpg
+/__pycache__
+/project/__pycache__
