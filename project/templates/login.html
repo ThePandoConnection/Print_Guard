@@ -12,6 +12,7 @@
       </div>
       <p class="login-submit"><input class="login-submit-btn" type="submit" value="Login"></p>
     </form>
+    <a class="button" href="{{ url_for('register')}}"> Register here </a>
     <p></p>
     {% with messages = get_flashed_messages() %}
       {% if messages %}

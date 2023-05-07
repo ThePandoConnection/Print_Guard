@@ -10,3 +10,11 @@ def SerialRead(port):
         ser.close()
     return output
 
+
+def SerialWrite(port):
+    ser = serial.Serial(port, 9800, timeout=None)
+
+    if ser.isOpen():
+        ser.write('10\n'.encode())
+        ser.close()
+

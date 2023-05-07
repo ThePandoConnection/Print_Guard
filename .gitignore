@@ -4,5 +4,6 @@
 /venv
 image.png
 /print.gcode
-/__pycache__
-/project/__pycache__
+/camera/image.png
+/camera/corrected.jpg
+/camera/image.jpg
