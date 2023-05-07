@@ -1,9 +1,9 @@
 import serial.serialutil
 import requests
 from werkzeug.utils import secure_filename
-from project import app, login_manager, fail_classifier_training
+from project import app, login_manager, fail_classifier_training, db
 from project.Models import User
-from project.Forms import LoginForm
+from project.Forms import RegistrationForm, LoginForm
 from project.Arduino_serial import SerialRead, SerialWrite
 from flask_login import login_user, logout_user, current_user
 import html
@@ -25,6 +25,18 @@ def home():
         f.close()
 
     return render_template("index.html")
+
+
+@app.route("/register",methods=['GET','POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username_new.data, password=form.password_new.data)
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template('register.html', title='Register', form=form)
+
 
 
 @app.route("/login", methods=['GET', 'POST'])

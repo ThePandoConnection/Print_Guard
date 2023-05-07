@@ -1,0 +1,39 @@
+html,body {
+  height:100%;
+  width:100%;
+  margin:0;
+}
+body {
+  display:flex;
+}
+#register-form {
+  margin:auto;
+}
+.register-wrapper{
+  display: block;
+  margin-left: auto;
+  margin-right: 0;
+  width: auto;
+  height: auto;
+}
+.register-fields {
+  text-align: right;
+}
+.register-submit{
+  display: flex;
+  justify-content: center;
+
+}
+.register-submit-btn{
+  transition-duration: 0.4s;
+  border-radius: 3px;
+  padding: 6px 28px;
+}
+.register-submit-btn:hover{
+  background-color: #4CAF50;
+  color: white;
+}
+.register-submit-btn:active{
+  background-color: #4CAF50;
+  color: white;
+}
