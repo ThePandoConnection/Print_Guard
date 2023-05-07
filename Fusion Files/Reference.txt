@@ -1,0 +1,3 @@
+ender 3 v2 model from: https://grabcad.com/library/creality-ender-3-v2-2
+
+that file is used to demonstrate how each model fits with the printer.

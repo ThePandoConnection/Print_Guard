@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, EqualTo, Regexp, ValidationError
-from Models import User
+from project.Models import User
 
 class RegistrationForm(FlaskForm):
     username_new = StringField('Username', validators=[DataRequired(), Regexp('^[a-zA-Z0-9]{5,20}$',
