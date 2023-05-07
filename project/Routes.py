@@ -1,13 +1,12 @@
 from werkzeug.utils import secure_filename
-from project import app, login_manager, fail_classifier_training
+from project import app, login_manager, fail_classifier_training, db
 from project.Models import User
-from project.Forms import LoginForm
+from project.Forms import RegistrationForm, LoginForm
 from project.Arduino_serial import SerialRead
 from flask_login import login_user, logout_user, current_user
 import html
-
 from project.main import loadGcode, PrintThread
-from flask import render_template, redirect, url_for, request, jsonify, Response, flash
+from flask import Flask, render_template, redirect, url_for, request, jsonify, Response, flash
 
 
 thread = None
@@ -21,6 +20,16 @@ def home():
         f.close()
 
     return render_template("index.html")
+
+@app.route("/register",methods=['GET','POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username_new.data, password=form.password_new.data)
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template('register.html',title='Register',form=form)
 
 @app.route("/login",methods=['GET','POST'])
 def login():
