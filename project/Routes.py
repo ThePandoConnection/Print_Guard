@@ -86,7 +86,10 @@ def stream():
 
 @app.route('/classify')
 def classify_image():
+    print('here')
     predicted, confidence = fail_classifier_training.classifyImage()
+    print(predicted)
+    print(confidence)
     return jsonify(predicted=predicted, confidence=confidence)
 
 
