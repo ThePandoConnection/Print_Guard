@@ -27,7 +27,7 @@ def home():
     return render_template("index.html")
 
 
-@app.route("/register",methods=['GET','POST'])
+@app.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -36,7 +36,6 @@ def register():
         db.session.commit()
         return redirect(url_for('home'))
     return render_template('register.html', title='Register', form=form)
-
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -59,6 +58,7 @@ def logout():
         logout_user()
     return redirect(url_for('login'))
 
+
 def gen_frames():
     url = 'http://192.168.0.210/stream'
     while True:
@@ -71,8 +71,8 @@ def gen_frames():
                 a = data.find(b"\xff\xd8")
                 b = data.find(b"\xff\xd9")
                 if a != -1 and b != -1:
-                    jpg = data[a:b+2]
-                    data = data[b+2:]
+                    jpg = data[a:b + 2]
+                    data = data[b + 2:]
                     frame = cv2.imdecode(np.frombuffer(jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
                     cv2.imwrite('./camera/image.jpg', frame)
 
@@ -82,10 +82,11 @@ def gen_frames():
 
                     # Yield the byte string as a Flask response
                     yield (b'--frame\r\n'
-                            b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+                           b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
         else:
             # If the response status code is not 200, break the loop
             break
+
 
 @app.route('/stream_url')
 def stream_url():
@@ -111,7 +112,8 @@ def stream():
                 else:
                     status = 'Ready'
                     finished = True
-                if ((float(temp) < 20) or (float(humi) > 50) or (state != 'OK')) and (thread.is_alive() and (not thread.isPaused())):
+                if ((float(temp) < 20) or (float(humi) > 50) or (state != 'OK')) and (
+                        thread.is_alive() and (not thread.isPaused())):
                     error = True
                     SerialWrite('COM6')
                 else:
