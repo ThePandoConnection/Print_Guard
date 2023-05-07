@@ -60,8 +60,9 @@ history = model.fit(
 )
 
 
-def classifyImage():
-    get_image.get_image()
+def classifyImage(mode):
+    if mode == 'demo':
+        get_image.get_image()
 
     img = tf.keras.utils.load_img(
         './camera/image.jpg', target_size=(img_height, img_width)

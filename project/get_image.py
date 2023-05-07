@@ -30,4 +30,4 @@ def get_image():
     im = Image.open('./camera/image.png')
     im = im.convert('RGB')
     out = im.rotate(180)
-    out.save('./camera/corrected.jpg')
+    out.save('./camera/image.jpg')
