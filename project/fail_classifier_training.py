@@ -10,7 +10,7 @@ img_height = 180
 img_width = 180
 
 train_ds = tf.keras.utils.image_dataset_from_directory(
-    "../Images",
+    "./Images",
     validation_split=0.2,
     subset="training",
     seed=123,
@@ -18,7 +18,7 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
     batch_size=batch_size)
 
 val_ds = tf.keras.utils.image_dataset_from_directory(
-    "../Images",
+    "./Images",
     validation_split=0.2,
     subset="validation",
     seed=123,
@@ -64,7 +64,7 @@ def classifyImage():
     get_image.get_image()
 
     img = tf.keras.utils.load_img(
-        './corrected.png', target_size=(img_height, img_width)
+        './camera/corrected.jpg', target_size=(img_height, img_width)
     )
     img_array = tf.keras.utils.img_to_array(img)
     img_array = tf.expand_dims(img_array, 0)  # Create a batch

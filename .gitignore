@@ -4,3 +4,6 @@
 /venv
 image.png
 /print.gcode
+/camera/image.png
+/camera/corrected.jpg
+

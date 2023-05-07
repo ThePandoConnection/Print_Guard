@@ -11,11 +11,11 @@ def get_image():
     driver = webdriver.Chrome('chromedriver', chrome_options=chrome_options)
 
     try:
-        os.remove('image.png')
+        os.remove('./camera/image.png')
     except FileNotFoundError:
         None
     try:
-        os.remove('corrected.png')
+        os.remove('./camera/corrected.jpg')
     except FileNotFoundError:
         None
 
@@ -26,7 +26,8 @@ def get_image():
     # Opening the website
     driver.get(url)
 
-    driver.save_screenshot("image.png")
-    im = Image.open('image.png')
+    driver.save_screenshot("./camera/image.png")
+    im = Image.open('./camera/image.png')
+    im = im.convert('RGB')
     out = im.rotate(180)
-    out.save('corrected.png')
+    out.save('./camera/corrected.jpg')
